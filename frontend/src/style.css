@@ -49,34 +49,58 @@
     margin-left: 20px;
   }
   */
-
-.site-header {
-    background-color: rgba(0, 0, 0, .85);
+body {
+  background-color: #202124 !important;
+  color: rgba(255, 255, 255, 0.87) !important;
+}
+span {
+  color: rgba(255, 255, 255, 0.87);
+}
+header {
+  background-color: #303134 !important;
 }
 .fs-5 {
-    font-size: 1.8rem !important;
+  font-size: 1.8rem !important;
 }
 .fs-4 {
-    font-size: 1.5rem !important;
+  font-size: 1.5rem !important;
 }
 .fs-1 {
-    font-size: 1rem !important;
+  font-size: 1rem !important;
 }
 .me-md-auto {
-    margin-right: auto !important;
-  }
+  margin-right: auto !important;
+}
 .kaukasus-description {
-    position: relative;
-    top: -20px;
+  position: relative;
+  top: -20px;
 }
 .kaukasus-hr {
-    margin-bottom: -30px !important;
+  margin-bottom: -30px !important;
 }
 .kaukasus-menu {
-    margin-top: 10px !important;
+  margin-top: 10px !important;
 }
 @media (min-width: 1200px) {
-    .container{
-        max-width: 1400px !important;
-    }
+  .container {
+    max-width: 1400px !important;
+  }
 }
+
+
+  .bd-navbar {
+    position: -webkit-sticky;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1071 !important;
+  }
+
+ header a.active{
+      color: #fff !important;
+  }
+ header a{
+    color: rgba(255,255,255,.5) !important;
+}
+header a:hover {
+    color: rgba(255,255,255,.75) !important;
+  }
