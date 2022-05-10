@@ -1,7 +1,7 @@
 import React from "react";
 
 import "./style.css";
-
+import logoLeft from "./Untitled.png";
 class App extends React.Component {
   render() {
     return (
@@ -58,22 +58,7 @@ In order to move along in the campaign, Teamplay is key!
                   </p>
                 </div>
                 <div className="col-auto d-none d-lg-block">
-                  <svg
-                    className="bd-placeholder-img"
-                    width="200"
-                    height="270"
-                    xmlns="http://www.w3.org/2000/svg"
-                    role="img"
-                    aria-label="Placeholder: Thumbnail"
-                    preserveAspectRatio="xMidYMid slice"
-                    focusable="false"
-                  >
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#55595c"></rect>
-                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                      Thumbnail
-                    </text>
-                  </svg>
+                    <img src={logoLeft} alt="Su-25T image"></img>
                 </div>
               </div>
             </div>
@@ -88,22 +73,7 @@ No matter which aircraft you choose to fly, there is a dedicated task for you, a
                   </p>
                 </div>
                 <div className="col-auto d-none d-lg-block">
-                  <svg
-                    className="bd-placeholder-img"
-                    width="200"
-                    height="270"
-                    xmlns="http://www.w3.org/2000/svg"
-                    role="img"
-                    aria-label="Placeholder: Thumbnail"
-                    preserveAspectRatio="xMidYMid slice"
-                    focusable="false"
-                  >
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#55595c"></rect>
-                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                      Thumbnail
-                    </text>
-                  </svg>
+                  <img src={logoLeft} alt="Su-25T image"></img>
                 </div>
               </div>
             </div>
