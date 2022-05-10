@@ -1,0 +1,82 @@
+/*body {
+    font: 14px "Century Gothic", Futura, sans-serif;
+    margin: 20px;
+  }
+  
+  ol, ul {
+    padding-left: 30px;
+  }
+  
+  .board-row:after {
+    clear: both;
+    content: "";
+    display: table;
+  }
+  
+  .status {
+    margin-bottom: 10px;
+  }
+  
+  .square {
+    background: #fff;
+    border: 1px solid #999;
+    float: left;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 34px;
+    height: 34px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: 34px;
+  }
+  
+  .square:focus {
+    outline: none;
+  }
+  
+  .kbd-navigation .square:focus {
+    background: #ddd;
+  }
+  
+  .game {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .game-info {
+    margin-left: 20px;
+  }
+  */
+
+.site-header {
+    background-color: rgba(0, 0, 0, .85);
+}
+.fs-5 {
+    font-size: 1.8rem !important;
+}
+.fs-4 {
+    font-size: 1.5rem !important;
+}
+.fs-1 {
+    font-size: 1rem !important;
+}
+.me-md-auto {
+    margin-right: auto !important;
+  }
+.kaukasus-description {
+    position: relative;
+    top: -20px;
+}
+.kaukasus-hr {
+    margin-bottom: -30px !important;
+}
+.kaukasus-menu {
+    margin-top: 10px !important;
+}
+@media (min-width: 1200px) {
+    .container{
+        max-width: 1400px !important;
+    }
+}

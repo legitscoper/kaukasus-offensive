@@ -1,3 +1,5 @@
+//1st executed file, renders whole app on App.js file.
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
