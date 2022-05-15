@@ -45,7 +45,6 @@ class SmallMap extends React.Component {
           <ImageOverlay
             url={GameMap}
             bounds={bounds}
-            opacity={0.5}
             zIndex={10}
           ></ImageOverlay>
           <Marker position={position}>
