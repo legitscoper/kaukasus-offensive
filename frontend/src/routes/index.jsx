@@ -4,6 +4,7 @@ import React from "react";
 
 import { motion } from "framer-motion/dist/framer-motion";
 
+import SmallMap from "../components/SmallMap";
 import logoLeft from "../img/image_left.png";
 import logoRight from "../img/image_right.png";
 
@@ -64,7 +65,7 @@ class Index extends React.Component {
         </div>
 
         <div className="row bg-light rounded-3 mb-4" id="small_map">
-          <img width={"1600px"} height={"800px"} alt="Game map"></img>
+            <SmallMap />
         </div>
 
         <div className="row align-items-md-stretch" id="statistics">

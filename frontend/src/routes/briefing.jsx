@@ -1,4 +1,5 @@
 // Briefing site.
+
 import React from "react";
 import { motion } from "framer-motion/dist/framer-motion";
 
@@ -19,8 +20,8 @@ class Briefing extends React.Component {
         exit="exit"
         transition={{ duration: 0.5 }}
       >
-        <h1 class="jumbotron-heading">Introduction</h1>
-        <p>
+        <h1 className="jumbotron-heading"><b>Introduction</b></h1>
+        <div>
           This mission intends to provide you a place to fly where you get
           meaningful things to do with moderate flying distances and balance in
           mind, and to make things better, this website should help you get an
@@ -84,11 +85,13 @@ class Briefing extends React.Component {
           everyone should at least listen to this radio channel! You can also
           use any secondary frequency to communicate with your wingman. If
           you're having trouble setting it up please check this space.
-        </p>
-        <h2 class="jumbotron-heading">
-          Getting Started (read this if you are new!)
+        </div>
+        <br></br>
+        <br></br>
+        <h2 className="jumbotron-heading">
+          <b>Getting Started (read this if you are new!)</b>
         </h2>
-        <p>
+        <div>
           Welcome to The Kaukasus Offensive!
           <br></br>
           <br></br>
@@ -239,7 +242,9 @@ class Briefing extends React.Component {
           connect to the Server (SRS should connect automatically, if not just
           enter the IP you find in the briefing), switch on your Radio, make
           sure you are tuned on 251MHz AM, and you're good to go!
-        </p>
+          <br></br>
+          <br></br>
+          </div>
       </motion.div>
     );
   }

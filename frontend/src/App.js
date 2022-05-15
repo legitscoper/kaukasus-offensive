@@ -2,6 +2,7 @@
 // It contains all main elements of website, header and animated routes which change the content of the page.
 
 import React from "react";
+
 import Helmet from "react-helmet";
 import "./style.css";
 
