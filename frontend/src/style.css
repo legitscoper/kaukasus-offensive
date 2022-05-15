@@ -87,20 +87,22 @@ header {
   }
 }
 
+.bd-navbar {
+  position: -webkit-sticky;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1071 !important;
+}
 
-  .bd-navbar {
-    position: -webkit-sticky;
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 1071 !important;
-  }
-
- header a.active{
-      color: #fff !important;
-  }
- header a{
-    color: rgba(255,255,255,.5) !important;
+header a.active {
+  color: #fff !important;
+}
+header a {
+  color: rgba(255, 255, 255, 0.5) !important;
 }
 header a:hover {
-    color: rgba(255,255,255,.75) !important;
-  }
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+#map {
+  height: 400px;
+}
