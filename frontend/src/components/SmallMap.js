@@ -1,11 +1,12 @@
-// Index, page rendered on the entering. Contains short introduction, map, statistics and more.
+// Map coponent file.
 
 import React from "react";
 
 import GameMap from "../img/gimp_map.jpg";
 
 import L from "leaflet";
-import { Map, TileLayer, Marker, Popup, MapContainer } from "react-leaflet";
+import { Marker, Popup, MapContainer, ImageOverlay } from "react-leaflet";
+import { CRS } from "leaflet";
 
 import "../style.css";
 
@@ -19,31 +20,40 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
+const bounds = new L.LatLngBounds([0, 0], [3365, 4578]);
+
+const position = [1000, 1000];
+
+
 class SmallMap extends React.Component {
   render() {
     return (
-      <div style={{ width: "100%", height: "100vh" }}>
+      <div style={{ width: "100%", height: "90vh" }}>
         {
           //<img src={GameMap} alt="Game Map" width={"1400px"}/>
         }
-          <MapContainer
-            center={[51.505, -0.09]}
-            zoom={13}
-            scrollWheelZoom={false}
-            icon={icon}
-            className="map"
-            style={{ width: "100%", height: "100vh" }}
-          >
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <Marker position={[51.505, -0.09]}>
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
-            </Marker>
-          </MapContainer>
+        <MapContainer
+          className="map"
+          style={{ width: "100%", height: "90vh" }}
+          crs={CRS.Simple}
+          center={[1500, 2300]}
+          zoom={-2}
+          scrollWheelZoom={false}
+          minZoom={-2}
+          maxZoom={2}
+        >
+          <ImageOverlay
+            url={GameMap}
+            bounds={bounds}
+            opacity={0.5}
+            zIndex={10}
+          ></ImageOverlay>
+          <Marker position={position}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+        </MapContainer>
       </div>
     );
   }
