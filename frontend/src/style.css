@@ -52,3 +52,6 @@ header a {
 header a:hover {
   color: rgba(255, 255, 255, 0.75) !important;
 }
+.map {
+  background-color: #202124 !important;
+}
