@@ -1,6 +1,7 @@
 import imp
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 import mysql.connector
 
@@ -16,6 +17,17 @@ mydb = mysql.connector.connect(
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 html = """
 <!DOCTYPE html>
@@ -56,11 +68,11 @@ html = """
 async def get():
     return HTMLResponse(html)
 
-@app.get("/map_data")
+@app.get("/api/get_map_data")
 async def get():
-    mycursor = mydb.cursor()
-    mycursor.execute("SELECT `objective_id`, `name`, `category`, `status`, `coalition`, `underAttack`, `numUnits`  FROM `ko_objectives` WHERE `serverid` = 4")
-    myresult = mycursor.fetchall()
+    conn = mydb.cursor()
+    conn.execute("SELECT `objective_id`, `name`, `category`, `status`, `coalition`, `underAttack`, `numUnits`  FROM `ko_objectives` WHERE `serverid` = 4")
+    myresult = conn.fetchall()
     return myresult
 
 
