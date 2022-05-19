@@ -71,7 +71,7 @@ async def get():
 @app.get("/api/get_map_data")
 async def get():
     conn = mydb.cursor()
-    conn.execute("SELECT `objective_id`, `name`, `category`, `status`, `coalition`, `underAttack`, `numUnits`  FROM `ko_objectives` WHERE `serverid` = 4")
+    conn.execute("SELECT `objective_id`, `name`, `category`, `status`, `coalition`, `underAttack`, `numUnits`  FROM `ko_objectives` WHERE `serverid` = 5")
     myresult = conn.fetchall()
     return myresult
 
