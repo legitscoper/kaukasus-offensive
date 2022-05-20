@@ -152,7 +152,6 @@ export default class SmallMap extends Component {
   state = {
     // stores all data received from api
     data: [],
-    test: "XD",
   };
 
   componentDidMount() {
@@ -172,7 +171,7 @@ export default class SmallMap extends Component {
         this.setState({
           data: data,
         });
-        this.mapArray = data;
+        //this.mapArray = data;
         this.getMapIntervalID = setTimeout(this.getMapData.bind(this), 60000);
         //console.log(data);
       });
