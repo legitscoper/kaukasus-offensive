@@ -23,12 +23,7 @@ import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import MapMarker from "./MapMarker";
 
 // BEGIN CUSTOM ICONS
-/*
-import importedAerodromeBlueIcon from "../img/icons/airport_blue.png";
-import importedAerodromeContestedIcon from "../img/icons/airport_contested.png";
-import importedAerodromeNeutralIcon from "../img/icons/airport_neutral.png";
-import importedAerodromeRedIcon from "../img/icons/airport_red.png";
-*/
+
 function importAll(r) {
   return r.keys().map(r);
 }
@@ -41,7 +36,11 @@ for (let i = 0; i < iconFileArray.length; i++) {
   iconFileArray[i] = Object.values(iconFileArray[i])[0];
 }
 //console.log(iconFileArray);
-var iconArray = [];
+var iconArray = []; // icon filenames used by client
+const iconNamesOrder = {"blue" : 0, "contested" : 1, "neutral" : 2, "red" : 3}; //needed for automatic icon types fill
+const objectivesNamesOrder = {"Aerodrome" : 0, "Communication" : 4, "Bunker" : 8, "Main Targets" : 12, "FARP" : 17};
+// for reference, search this file for " DOC:TYPES "
+//types start: 0, 4, 8, 12, 17
 
 for (let i = 0; i < iconFileArray.length; i++) { // Automatic icon object array creation, since it's better than 22 imports.
   iconArray[i] = new L.icon({
@@ -53,39 +52,6 @@ for (let i = 0; i < iconFileArray.length; i++) { // Automatic icon object array 
   });
 }
 //console.log(iconArray);
-/*
-let AerodromeBlueIcon = L.icon({
-  iconUrl: importedAerodromeBlueIcon,
-  shadowUrl: iconShadow,
-  iconSize: [28, 41],
-  iconAnchor: [14, 41],
-  popupAnchor: [0, -34],
-});
-
-let AerodromeRedIcon = L.icon({
-  iconUrl: importedAerodromeRedIcon,
-  shadowUrl: iconShadow,
-  iconSize: [28, 41],
-  iconAnchor: [14, 41],
-  popupAnchor: [0, -34],
-});
-
-let AerodromeContestedIcon = L.icon({
-  iconUrl: importedAerodromeContestedIcon,
-  shadowUrl: iconShadow,
-  iconSize: [28, 41],
-  iconAnchor: [14, 41],
-  popupAnchor: [0, -34],
-});
-
-let AerodromeNeutralIcon = L.icon({
-  iconUrl: importedAerodromeNeutralIcon,
-  shadowUrl: iconShadow,
-  iconSize: [28, 41],
-  iconAnchor: [14, 41],
-  popupAnchor: [0, -34],
-});
-*/
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -100,9 +66,8 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 const bounds = new L.LatLngBounds([0, 0], [3590, 4510]);
 
-var position = [1000, 1000];
+//var position = [1000, 1000];
 
-const zoom = 13;
 
 var objecitves = new Array(39).fill(0); // Initialise empty array, I have no idea why you have to do this.
 // But this is needed to later modify it with map fuction, which is not possible with empty array.
@@ -233,31 +198,27 @@ export default class SmallMap extends Component {
               var convDataArr = convData.split(","); // splits values to array
               //console.log(convDataArr); // ID, name, type, status, coallition, underAttack, numUnits
               var objIcon = DefaultIcon;
-              switch (convDataArr[2]) {
-                case "Aerodrome":
-                  switch (convDataArr[4]) {
-                    case "blue":
-                      objIcon = iconArray[0];
-                      break;
-                    case "contested":
-                      objIcon = iconArray[1];
-                      break;
-                    case "neutral":
-                      objIcon = iconArray[2];
-                      break;
-                    case "red":
-                      objIcon = iconArray[3];
-                      break;
+              // this part of code was hard for my brain to process
 
-                    default:
-                      objIcon = DefaultIcon;
-                      break;
-                  }
-                  break;
-                default:
-                  objIcon = DefaultIcon;
-                  break;
-              }
+              //convDataArr[2] ---- type
+              //convDataArr[4] ---- coallition
+
+              // icon order --- blue, contested, neutral, red
+              //iconArray[0] - [3] - airports
+              //iconArray[4] - [7] - antennas
+              //iconArray[8] - [11] - bunkers
+              //iconArray[12] - [15] - dam
+              //iconArray[16] - explosion
+              //iconArray[17] - [20] - FARP
+              //iconArray[21] - flame.gif
+              // DOC:TYPES
+              //so, knowing these indexes, types start at: 0, 4, 8, 12, 17
+
+              // calculatedID = objectiveNamesOrder + objectivesType, as calculated from their associative arrays.
+              var calculatedID = objectivesNamesOrder[convDataArr[2]] + iconNamesOrder[convDataArr[4]];
+              // this gets values from those associative arrays, and uses them to calcualte iconID,
+              // skipping not used files.
+              objIcon = iconArray[calculatedID];
 
               return (
                 <Marker
@@ -266,7 +227,9 @@ export default class SmallMap extends Component {
                   position={positionMap[i]}
                   icon={objIcon}
                 >
-                  <Popup>{convDataArr[1]}</Popup>
+                  <Popup>
+                    {convDataArr[1]} // popup data
+                    </Popup>
                 </Marker>
               );
             }
