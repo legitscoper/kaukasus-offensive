@@ -22,8 +22,7 @@ const popupHeadNeutral = {
 const popupHeadContested = {
   fontWeight: "bold",
   fontSize: "18px",
-  // make text color a linear gradient from red to blue
-  color: "linear-gradient(to right, red, blue)",
+  animation: "ease-in-out contested 1s infinite alternate",
 };
 
 const popupText = {
@@ -45,6 +44,27 @@ class MapMarker extends React.Component {
         return <span style={popupHeadContested}>{props.text}</span>;
       }
     }
+
+    function UnderAttack(props) {
+      if (props.objUnderAttack > 0) {
+        return (
+          <span style={popupText}>
+            <br></br><br></br>
+            <span style={{ color: "red" }}>
+              {" "}
+              <b>Under Attack!</b>
+            </span>
+          </span>
+        );
+      }
+    }
+    function Contested(props) {
+      if (props.objCoallition === "contested") {
+        return (
+          <span style={{ color: "grey", fontWeight: "bold" }}> Contested!</span>
+        );
+      }
+    }
     return (
       <Marker
         position={this.props.position}
@@ -62,15 +82,14 @@ class MapMarker extends React.Component {
             coallition={this.props.objCoallition}
           />
           <br></br>
-          <span style={popupText}>Type: {this.props.objType}</span>
-          <br></br>
-          <span style={popupText}>Status: {this.props.objStatus}</span>
+          <Contested objCoallition={this.props.objCoallition} />
           <br></br>
           <span style={popupText}>
-            Under Attack: {this.props.objUnderAttack}
+            Status: <b>{this.props.objStatus}</b>
           </span>
           <br></br>
-          <span style={popupText}>Units: {this.props.objNumUnits}</span>
+          <span style={popupText}>Units: <b>{this.props.objNumUnits}</b></span>
+          <UnderAttack objUnderAttack={this.props.objUnderAttack} />
         </Popup>
       </Marker>
     );
