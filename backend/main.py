@@ -75,6 +75,12 @@ async def get():
     myresult = conn.fetchall()
     return myresult
 
+@app.get("/api/mission_statistics")
+async def get():
+    conn = mydb.cursor()
+    conn.execute("SELECT `serverStartTime`, `serverTime`, `campaignSecs`, `lifeResetTimer`  FROM `ko_missionstatus` WHERE `serverID` = 5")
+    myresult = conn.fetchall()
+    return myresult
 
 
 @app.websocket("/ws")
