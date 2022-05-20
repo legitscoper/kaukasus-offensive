@@ -10,8 +10,6 @@ import L from "leaflet";
 import {
   MapContainer,
   ImageOverlay,
-  Marker,
-  Popup,
   useMapEvents,
 } from "react-leaflet";
 import { CRS } from "leaflet";
@@ -22,7 +20,14 @@ import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import MapMarker from "./MapMarker";
 
-// BEGIN CUSTOM ICONS
+///////////////////////////////////////////////////////////////////////////////////
+/* _____          _                    _                     
+  / ____|        | |                  (_)                    
+ | |    _   _ ___| |_ ___  _ __ ___    _  ___ ___  _ __  ___ 
+ | |   | | | / __| __/ _ \| '_ ` _ \  | |/ __/ _ \| '_ \/ __|
+ | |___| |_| \__ \ || (_) | | | | | | | | (_| (_) | | | \__ \
+  \_____\__,_|___/\__\___/|_| |_| |_| |_|\___\___/|_| |_|___/
+*/
 
 function importAll(r) {
   return r.keys().map(r);
@@ -59,8 +64,14 @@ let DefaultIcon = L.icon({
   iconAnchor: [12, 41],
   popupAnchor: [0, -34],
 });
-
-// END CUSTOM ICONS
+//END
+/* _____          _                    _                     
+  / ____|        | |                  (_)                    
+ | |    _   _ ___| |_ ___  _ __ ___    _  ___ ___  _ __  ___ 
+ | |   | | | / __| __/ _ \| '_ ` _ \  | |/ __/ _ \| '_ \/ __|
+ | |___| |_| \__ \ || (_) | | | | | | | | (_| (_) | | | \__ \
+  \_____\__,_|___/\__\___/|_| |_| |_| |_|\___\___/|_| |_|___/
+*///////////////////////////////////////////////////////////////////////////////////////////
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
@@ -193,8 +204,9 @@ export default class SmallMap extends Component {
           {objecitves.map((object, i) => {
             if (this.state.data[i] !== undefined) {
               var convData = `[${this.state.data[i]}]`;
-              convData = convData.substring(1, convData.length - 1); // removes front bracket
-              convData = convData.substring(0, convData.length - 2); // removes back bracket
+              
+              convData = convData.substring(1, convData.length - 1); // removes front and rear bracket
+              
               var convDataArr = convData.split(","); // splits values to array
               //console.log(convDataArr); // ID, name, type, status, coallition, underAttack, numUnits
               var objIcon = DefaultIcon;
@@ -219,21 +231,24 @@ export default class SmallMap extends Component {
               // this gets values from those associative arrays, and uses them to calcualte iconID,
               // skipping not used files.
               objIcon = iconArray[calculatedID];
-
               return (
-                <Marker
-                  obj={object}
-                  key={i}
-                  position={positionMap[i]}
-                  icon={objIcon}
-                >
-                  <Popup>
-                    {convDataArr[1]} // popup data
-                    </Popup>
-                </Marker>
+                <MapMarker obj={object}
+                key={i}
+                position={positionMap[i]}
+                icon={objIcon}
+                objName={convDataArr[1]}
+                objType={convDataArr[2]}
+                objStatus={convDataArr[3]}
+                objCoallition={convDataArr[4]}
+                objUnderAttack={convDataArr[5]}
+                objNumUnits={convDataArr[6]}>
+
+                </MapMarker>
               );
             }
-          })}
+            return 0; // idk why but this arrow function needs one
+          }
+          )}
         </MapContainer>
         <br></br>
         <br></br>
