@@ -135,18 +135,15 @@ fromEvent(document, "click").subscribe(() => {
 });
 
 const LocationFinderDummy = () => {
-  const map = useMapEvents({
+  useMapEvents({
     click(e) {
-      console.log(e.latlng);
+      //console.log(e.latlng); //used to debgug click position. Do not remove!
     },
   });
   return null;
 };
 
 export default class SmallMap extends Component {
-  constructor(props) {
-    super(props);
-  }
   getMapIntervalID;
 
   state = {
