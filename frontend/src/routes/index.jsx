@@ -8,7 +8,46 @@ import SmallMap from "../components/SmallMap";
 import logoLeft from "../img/image_left.png";
 import logoRight from "../img/image_right.png";
 
+var toHHMMSS = (secs) => {
+  var sec_num = parseInt(secs, 10)
+  var hours   = Math.floor(sec_num / 3600)
+  var minutes = Math.floor(sec_num / 60) % 60
+  var seconds = sec_num % 60
+
+  return [hours,minutes,seconds]
+      .map(v => v < 10 ? "0" + v : v)
+      .filter((v,i) => v !== "00" || i > 0)
+      .join(":")
+}
+
 class Index extends React.Component {
+  getStatisticsIntervalID;
+
+  state = {
+    // stores all data received from api
+    statistics: [],
+  };
+  componentDidMount() {
+    this.getStatistics();
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.getStatisticsIntervalID);
+  }
+  getStatistics = () => {
+    console.log("GET");
+    fetch("http://localhost:8000/api/get_mission_statistics", {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((statistics) => {
+        this.setState({
+          statistics: statistics,
+        });
+        this.getStatisticsIntervalID = setTimeout(this.getStatistics.bind(this), 60000);
+        //console.log(statistics);
+      });
+  };
   render() {
     return (
       <motion.div
@@ -72,11 +111,32 @@ class Index extends React.Component {
           <div className="col-md-6">
             <div className="h-100 p-5 text-white bg-dark rounded-3">
               <h4>Statistics</h4>
-              <p>
-                Swap the background-color utility and add a `.text-*` color
-                utility to mix up the jumbotron look. Then, mix and match with
-                additional component themes and more.
-              </p>
+                {this.state.statistics.map((statistic, i) => {
+                  if (this.state.statistics[i] !== undefined) {
+                    
+                    var lifeReset = toHHMMSS(60* statistic[3]);//new Date(statistic[3] * 1000 * 60).toISOString().substring(11, 16);
+                    var missionRestart = toHHMMSS(14400 - (statistic[1] - statistic[0]));//new Date(14400 - (statistic[2] - statistic[0]) * 1000).toISOString().substring(11, 16);
+          
+                    var missionTime = toHHMMSS(statistic[2]);
+                    var serverDays = Math.floor(statistic[2]/60/60/24);
+                    var missionHours = Math.floor(statistic[2]/60/60) - serverDays*24;
+                    var missionMinutes = Math.floor(statistic[2]/60) - serverDays*24*60 - missionHours*60;
+                    missionTime /= 24;
+                    // `serverStartTime`, `serverTime`, `campaignSecs`, `lifeResetTimer`, `serverStatus`
+                    return(
+                  
+                  <div key={i}>
+                    <span>Server is: <b>{statistic[4]}</b></span><br></br>
+                    <span>Life reset in: <b>{lifeReset}</b></span><br></br>
+                    <span>Mission Restart: <b>{missionRestart}</b></span><br></br>
+                    <span>Campaign is on since: <b>{serverDays} days, {missionHours} hours, {missionMinutes} minutes.</b></span><br></br>
+                    <span>There are <b>{statistic[4]}</b> Players online </span><br></br>
+
+                  </div>
+                    );
+                  }
+                return 0;
+                })}
               <button className="btn btn-outline-light" type="button">
                 Example button
               </button>
