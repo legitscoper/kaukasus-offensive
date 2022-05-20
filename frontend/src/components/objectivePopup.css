@@ -1,6 +1,10 @@
 .objectivePopup .leaflet-popup-content-wrapper {
     border-radius: 0px !important;
 }
-span {
+div.leaflet-popup-content span {
     color: black;
+}
+@keyframes contested {
+    from {color: red;}
+    to {color: blue;}
 }
