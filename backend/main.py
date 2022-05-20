@@ -8,10 +8,10 @@ import mysql.connector
 #import sched, time
 
 mydb = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="",
-  database="tfhft"
+    host="localhost",
+    user="root",
+    password="",
+    database="tfhft"
 )
 
 
@@ -68,6 +68,7 @@ html = """
 async def get():
     return HTMLResponse(html)
 
+
 @app.get("/api/get_map_data")
 async def get():
     conn = mydb.cursor()
@@ -75,10 +76,27 @@ async def get():
     myresult = conn.fetchall()
     return myresult
 
+
 @app.get("/api/get_mission_statistics")
 async def get():
     conn = mydb.cursor()
     conn.execute("SELECT `serverStartTime`, `serverTime`, `campaignSecs`, `lifeResetTimer`, `serverStatus`  FROM `ko_missionstatus` WHERE `serverID` = 5")
+    myresult = conn.fetchall()
+    return myresult
+
+
+@app.get("/api/get_slots")
+async def get():
+    conn = mydb.cursor()
+    conn.execute("SELECT * FROM `ko_slotlist` WHERE `serverID` = 5")
+    myresult = conn.fetchall()
+    return myresult
+
+
+@app.get("/api/count_players")
+async def get():
+    conn = mydb.cursor()
+    conn.execute("SELECT COUNT(*) FROM `ko_slotlist` WHERE `serverID` = 5")
     myresult = conn.fetchall()
     return myresult
 
@@ -89,8 +107,6 @@ async def websocket_endpoint(websocket: WebSocket):
     while True:
         data = await websocket.receive_text()
         await websocket.send_text(f"Message text was: {data}")
-
-
 
 
 #mycursor = mydb.cursor()
