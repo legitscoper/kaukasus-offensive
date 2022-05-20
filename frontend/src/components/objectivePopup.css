@@ -1,0 +1,6 @@
+.objectivePopup .leaflet-popup-content-wrapper {
+    border-radius: 0px !important;
+}
+span {
+    color: black;
+}
