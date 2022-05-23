@@ -16,17 +16,19 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 // variables
 
+var clientID = Date.now();
 const client = new W3CWebSocket(
-  "wss://demo.piesocket.com/v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self"
+  //"wss://demo.piesocket.com/v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self",
+  "ws://localhost:7777" ,
 );
+
 
 // end variables
 
-
-
 class App extends React.Component {
-  UNSAFE_componentWillMount() { // executed when component is going to be mounted
-    /*
+  UNSAFE_componentWillMount() {
+    // executed when component is going to be mounted
+    console.log("Initialising websocket");
     client.onopen = () => {
       console.log("WebSocket Client Connected");
     };
@@ -36,10 +38,10 @@ class App extends React.Component {
       console.log("PLAIN: " + message.data);
       console.log("JSON: " + object.xd);
     };
-    */
+
     // END WEBSOCKET
   }
-  
+
   render() {
     return (
       <>
