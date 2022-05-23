@@ -145,7 +145,7 @@ const LocationFinderDummy = () => {
 };
 
 export default class SmallMap extends Component {
-  getMapIntervalID;
+  //getMapIntervalID;
 
   state = {
     // stores all data received from api
@@ -157,10 +157,11 @@ export default class SmallMap extends Component {
   }
 
   componentWillUnmount() {
-    clearTimeout(this.getMapIntervalID);
+    //clearTimeout(this.getMapIntervalID);
   }
   getMapData = () => {
-    console.log("GET");
+    //console.log("Getting websocket data");
+    /*
     fetch("http://localhost:8000/api/get_map_data", {
       method: "GET",
     })
@@ -173,6 +174,7 @@ export default class SmallMap extends Component {
         this.getMapIntervalID = setTimeout(this.getMapData.bind(this), 60000);
         //console.log(data);
       });
+      */
   };
 
   render() {

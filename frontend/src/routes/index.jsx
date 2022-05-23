@@ -45,7 +45,7 @@ class Index extends React.Component {
     clearTimeout(this.getPlayerCountIntervalID);
   }
   getStatistics = () => {
-    console.log("GET");
+    //console.log("GET");
     fetch("http://localhost:8000/api/get_mission_statistics", {
       method: "GET",
     })
@@ -62,7 +62,7 @@ class Index extends React.Component {
       });
   };
   getSlots = () => {
-    console.log("GET");
+    //console.log("GET");
     fetch("http://localhost:8000/api/get_slots", {
       method: "GET",
     })
@@ -76,7 +76,7 @@ class Index extends React.Component {
       });
   };
   getPlayerCount = () => {
-    console.log("GET");
+    //console.log("GET");
     fetch("http://localhost:8000/api/count_players", {
       method: "GET",
     })
