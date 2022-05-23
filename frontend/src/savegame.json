@@ -440,7 +440,7 @@
          "groundUnits":{
             
          },
-         "status":"open",
+         "status":"open",  
          "priority":"strategic",
          "activeConvoyZone":0,
          "groups":{
