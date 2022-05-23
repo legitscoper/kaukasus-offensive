@@ -75,7 +75,8 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const bounds = new L.LatLngBounds([0, 0], [3590, 4510]);
+const bounds = new L.LatLngBounds([0, 0], [3590, 4510]); // map bounds
+const extendedBounds = new L.LatLngBounds([-400, -400], [3990, 4910]); // view bounds
 
 //var position = [1000, 1000];
 
@@ -121,7 +122,7 @@ const positionMap = [
   [1351, 2793], // East Bunker
   [1838, 588], // West Bunker
   [1306, 1179], // Antenna Inguri
-  [944, 2137], // Antenna Amboulrai. Also, pope John Paul II died at 21:37, it's also a meme number in Poland
+  [944, 2137], // Antenna Amboulrai. Also, pope John Paul II died at 21:37, it's a meme number in Poland
   [1750, 2046], // Antenna Balkariya
   [1292, 2062], // Antenna Oni
   [1425, 2608], // Antenna East Bunker
@@ -188,7 +189,7 @@ export default class SmallMap extends Component {
           minZoom={-2}
           maxZoom={3}
           maxBoundsViscosity={1}
-          maxBounds={bounds}
+          maxBounds={extendedBounds}
         >
           <ImageOverlay
             url={GameMap}
