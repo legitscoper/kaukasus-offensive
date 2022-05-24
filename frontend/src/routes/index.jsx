@@ -1,8 +1,9 @@
 // Index, page rendered on the entering. Contains short introduction, map, statistics and more.
 
 import React from "react";
-
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { motion } from "framer-motion/dist/framer-motion";
+
 
 import SmallMap from "../components/SmallMap";
 import logoLeft from "../img/image_left.png";
@@ -22,7 +23,35 @@ var toHHMMSS = (secs) => {
     .join(":");
 };
 
+const client = new W3CWebSocket(
+  //"wss://demo.piesocket.com/v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self",
+  "ws://localhost:2137" ,
+);
+
+
+      /*
+      // parse all data received
+      const acceptedCategories = ["Aerodrome", "Comminication", "Main Targets", "properties", "FARP", "Bunker"];
+      const acceptedProperties = ["startTimer", "campaignSecs", "missionRuntime", "timer"];
+      // check if incomming message in in acceptedCategories, so the data is correct
+      var dataKeys = Object.keys(object);
+      const found = dataKeys.some(r=> acceptedCategories.includes(r)); 
+      // check if JSON keys of received
+      // data are in possible categories
+      if (found) {
+        console.log("Received correct data");
+        if (dataKeys[0] === "properties") { // received a properties data
+          console.log("PROPERTIES:" + Object.keys(object.properties));
+          Subscriber.next(object.properties);
+          
+        }
+      }
+      */
+
+
+
 class Index extends React.Component {
+
   getStatisticsIntervalID;
   getSlotsIntervalID;
   getPlayerCountIntervalID;
@@ -34,10 +63,23 @@ class Index extends React.Component {
     playerCount: [],
   };
   componentDidMount() {
+    console.log("Initialising websocket");
+    client.onopen = () => {
+      console.log("WebSocket Client Connected");
+    };    
+      client.onmessage = (message) => {
+        //console.log(message);
+        var object = JSON.parse(message.data);
+        
+
+      };
     this.getStatistics();
     this.getSlots();
     this.getPlayerCount();
+
   }
+
+
 
   componentWillUnmount() {
     clearTimeout(this.getStatisticsIntervalID);
@@ -45,6 +87,7 @@ class Index extends React.Component {
     clearTimeout(this.getPlayerCountIntervalID);
   }
   getStatistics = () => {
+    
     //console.log("GET");
     fetch("http://localhost:8000/api/get_mission_statistics", {
       method: "GET",
@@ -224,7 +267,9 @@ class Index extends React.Component {
               </h2>
               <div className="row">
                 <div className="col">
-                  <p><b>FIGHTER:</b></p>
+                  <p>
+                    <b>FIGHTER:</b>
+                  </p>
                   <ul style={{ listStyleType: "none" }}>
                     <li> - free slot -</li>
                     <li> - free slot -</li>
@@ -235,20 +280,42 @@ class Index extends React.Component {
                   </ul>
                 </div>
                 <div className="col">
-                  <p><b>STRIKER:</b></p>
+                  <p>
+                    <b>STRIKER:</b>
+                  </p>
                   <ul style={{ listStyleType: "none" }}>
-                    <li> <Slot /></li>
-                    <li> <Slot /></li>
-                    <li> <Slot /></li>
-                    <li> <Slot /></li>
-                    <li> <Slot /></li>
-                    <li> <Slot /></li>
+                    <li>
+                      {" "}
+                      <Slot />
+                    </li>
+                    <li>
+                      {" "}
+                      <Slot />
+                    </li>
+                    <li>
+                      {" "}
+                      <Slot />
+                    </li>
+                    <li>
+                      {" "}
+                      <Slot />
+                    </li>
+                    <li>
+                      {" "}
+                      <Slot />
+                    </li>
+                    <li>
+                      {" "}
+                      <Slot />
+                    </li>
                   </ul>
                 </div>
               </div>
               <div className="row">
                 <div className="col">
-                  <p><b>HELICOPTER:</b></p>
+                  <p>
+                    <b>HELICOPTER:</b>
+                  </p>
                   <ul style={{ listStyleType: "none" }}>
                     <li> - free slot -</li>
                     <li> - free slot -</li>
@@ -259,7 +326,9 @@ class Index extends React.Component {
                   </ul>
                 </div>
                 <div className="col">
-                  <p><b>GCI:</b></p>
+                  <p>
+                    <b>GCI:</b>
+                  </p>
                   <ul style={{ listStyleType: "none" }}>
                     <li> - free slot -</li>
                     <li> - free slot -</li>
@@ -280,7 +349,9 @@ class Index extends React.Component {
               </h2>
               <div className="row">
                 <div className="col">
-                  <p><b>FIGHTER:</b></p>
+                  <p>
+                    <b>FIGHTER:</b>
+                  </p>
                   <ul style={{ listStyleType: "none" }}>
                     <li> - free slot -</li>
                     <li> - free slot -</li>
@@ -291,7 +362,9 @@ class Index extends React.Component {
                   </ul>
                 </div>
                 <div className="col">
-                  <p><b>STRIKER:</b></p>
+                  <p>
+                    <b>STRIKER:</b>
+                  </p>
                   <ul style={{ listStyleType: "none" }}>
                     <li> - free slot -</li>
                     <li> - free slot -</li>
@@ -304,7 +377,9 @@ class Index extends React.Component {
               </div>
               <div className="row">
                 <div className="col">
-                  <p><b>HELICOPTER:</b></p>
+                  <p>
+                    <b>HELICOPTER:</b>
+                  </p>
                   <ul style={{ listStyleType: "none" }}>
                     <li> - free slot -</li>
                     <li> - free slot -</li>
@@ -315,7 +390,9 @@ class Index extends React.Component {
                   </ul>
                 </div>
                 <div className="col">
-                  <p><b>GCI:</b></p>
+                  <p>
+                    <b>GCI:</b>
+                  </p>
                   <ul style={{ listStyleType: "none" }}>
                     <li> - free slot -</li>
                     <li> - free slot -</li>

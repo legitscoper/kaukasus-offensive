@@ -3,8 +3,7 @@
 import React, { Component } from "react";
 
 import GameMap from "../img/gimp_map2.jpg";
-
-import { fromEvent } from "rxjs";
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 import L from "leaflet";
 import {
@@ -129,11 +128,13 @@ const positionMap = [
   // Finally, it took me like 2 hours to make this list. But it's perfect...
 ];
 
-// END VARIABLES
 
-fromEvent(document, "click").subscribe(() => {
-  //console.log("Clicked!");
-});
+const client = new W3CWebSocket(
+  //"wss://demo.piesocket.com/v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self",
+  "ws://localhost:2137" ,
+);
+
+// END VARIABLES
 
 const LocationFinderDummy = () => {
   useMapEvents({
@@ -153,6 +154,15 @@ export default class SmallMap extends Component {
   };
 
   componentDidMount() {
+    console.log("Initialising websocket");
+    client.onopen = () => {
+      console.log("WebSocket Client Connected");
+    };    
+      client.onmessage = (message) => {
+        //console.log(message);
+        var object = JSON.parse(message.data);
+
+      };
     this.getMapData();
   }
 
