@@ -1,5 +1,6 @@
 var WebSocketClient = require('websocket').client;
 const W3CWebSocket = require('websocket/lib/W3CWebSocket');
+
 // Importing the required modules
 const WebSocketServer = require('ws');
  
@@ -10,7 +11,7 @@ const WebSocketServer = require('ws');
 var client = new WebSocketClient();
 
 // Creating a new websocket server
-const wss = new WebSocketServer.Server({ port: 7777 })
+const wss = new WebSocketServer.Server({ port: 2137 })
 
 var DCSData = ""; // global variable to store received data, later to be sent
 
@@ -48,7 +49,7 @@ client.connect('wss://demo.piesocket.com/v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJ
 //var clientArray = [];
 
 wss.broadcast = function broadcast(msg) {
-    console.log(msg);
+    console.log("Sending:" + msg);
     wss.clients.forEach(function each(client) {
         client.send(msg);
      });
@@ -58,19 +59,8 @@ wss.broadcast = function broadcast(msg) {
 // Creating connection using websocket
 wss.on("connection", ws => {
     console.log("new client connected");
-    // sending message
-    // add new client to clientArray when new user connects
-    //clientArray.push(ws);
-    //console.log(clientArray);
 
-    ws.on('message', function message(data, isBinary) {
-        wss.clients.forEach(function each(client) {
-          if (client !== ws && client.readyState === WebSocket.OPEN) {
-            console.log("Sending data to " + client + ": " + data);
-            client.send(data, { binary: isBinary });
-          }
-        });
-      });
+    
     // handling what to do when clients disconnects from server
     ws.on("close", () => {
         console.log("the client has disconnected");
@@ -80,4 +70,4 @@ wss.on("connection", ws => {
         console.log("Some Error occurred")
     }
 });
-console.log("The WebSocket server is running on port 7777");
+console.log("The WebSocket server is running on port 2137");
