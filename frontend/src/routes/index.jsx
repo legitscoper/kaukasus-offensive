@@ -3,11 +3,11 @@
 import React from "react";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { motion } from "framer-motion/dist/framer-motion";
-
-
+import { useState, useEffect } from "react";
 import SmallMap from "../components/SmallMap";
 import logoLeft from "../img/image_left.png";
 import logoRight from "../img/image_right.png";
+import axios from "axios";
 
 import Slot from "../components/Slot";
 
@@ -25,11 +25,10 @@ var toHHMMSS = (secs) => {
 
 const client = new W3CWebSocket(
   //"wss://demo.piesocket.com/v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self",
-  "ws://localhost:2137" ,
+  "ws://localhost:2137"
 );
 
-
-      /*
+/*
       // parse all data received
       const acceptedCategories = ["Aerodrome", "Comminication", "Main Targets", "properties", "FARP", "Bunker"];
       const acceptedProperties = ["startTimer", "campaignSecs", "missionRuntime", "timer"];
@@ -48,47 +47,52 @@ const client = new W3CWebSocket(
       }
       */
 
+const PlayerCount = () => {
+  const [playerCount, setPlayerCount] = useState(0);
+  useEffect(() => {
+    getPlayerCount();
+  });
 
+  const getPlayerCount = () => {
+    axios
+      .get("http://localhost:8000/api/count_players")
+      .then((res) => {
+        //console.log(Object.values(res.data[0])[0]);
+        setPlayerCount(Object.values(res.data[0])[0]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  return (
+    <span>
+      There are <b>{playerCount}</b> Players online{" "}
+    </span>
+  );
+};
 
 class Index extends React.Component {
-
-  getStatisticsIntervalID;
-  getSlotsIntervalID;
-  getPlayerCountIntervalID;
-
   state = {
     // stores all data received from api
     statistics: [],
     slots: [],
-    playerCount: [],
+    //playerCount: [],
   };
   componentDidMount() {
+    this.getStatistics();
+    this.getSlots();
+    //this.getPlayerCount();
     console.log("Initialising websocket");
     client.onopen = () => {
       console.log("WebSocket Client Connected");
-    };    
-      client.onmessage = (message) => {
-        //console.log(message);
-        var object = JSON.parse(message.data);
-        
-
-      };
-    this.getStatistics();
-    this.getSlots();
-    this.getPlayerCount();
-
+    };
+    client.onmessage = (message) => {
+      //console.log(message);
+      var object = JSON.parse(message.data);
+    };
   }
 
-
-
-  componentWillUnmount() {
-    clearTimeout(this.getStatisticsIntervalID);
-    clearTimeout(this.getSlotsIntervalID);
-    clearTimeout(this.getPlayerCountIntervalID);
-  }
   getStatistics = () => {
-    
-    //console.log("GET");
     fetch("http://localhost:8000/api/get_mission_statistics", {
       method: "GET",
     })
@@ -97,15 +101,9 @@ class Index extends React.Component {
         this.setState({
           statistics: statistics,
         });
-        this.getStatisticsIntervalID = setTimeout(
-          this.getStatistics.bind(this),
-          60000
-        );
-        //console.log(statistics);
       });
   };
   getSlots = () => {
-    //console.log("GET");
     fetch("http://localhost:8000/api/get_slots", {
       method: "GET",
     })
@@ -114,12 +112,10 @@ class Index extends React.Component {
         this.setState({
           slots: slots,
         });
-        this.getSlotsIntervalID = setTimeout(this.getSlots.bind(this), 60000);
-        //console.log(statistics);
       });
   };
+  /*
   getPlayerCount = () => {
-    //console.log("GET");
     fetch("http://localhost:8000/api/count_players", {
       method: "GET",
     })
@@ -128,13 +124,9 @@ class Index extends React.Component {
         this.setState({
           playerCount: playerCount,
         });
-        this.getPlayerCountIntervalID = setTimeout(
-          this.getPlayerCount.bind(this),
-          60000
-        );
-        //console.log(playerCount);
       });
   };
+  */
   render() {
     return (
       <motion.div
@@ -203,7 +195,15 @@ class Index extends React.Component {
                 // but I solved other problem in SmallMap.js with it
                 // and it can also work here despite not printing multiple components like there.
                 if (this.state.statistics[i] !== undefined) {
+                  statistic = Object.values(statistic); // conevert to proper format
                   var lifeReset = toHHMMSS(60 * statistic[3]);
+
+                  /*
+                  if (this.state.playerCount !== undefined) {
+                    this.state.playerCount = this.state.playerCount[0];
+                    var playerCount = Object.values(this.state.playerCount)[0];
+                  }*/
+
                   var missionRestart = toHHMMSS(
                     14400 - (statistic[1] - statistic[0])
                   );
@@ -238,10 +238,8 @@ class Index extends React.Component {
                         </b>
                       </span>
                       <br></br>
-                      <span>
-                        There are <b>{this.state.playerCount[0]}</b> Players
-                        online{" "}
-                      </span>
+                      <PlayerCount />
+
                       <br></br>
                     </div>
                   );
