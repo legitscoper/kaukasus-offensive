@@ -6,11 +6,7 @@ import GameMap from "../img/gimp_map2.jpg";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 import L from "leaflet";
-import {
-  MapContainer,
-  ImageOverlay,
-  useMapEvents,
-} from "react-leaflet";
+import { MapContainer, ImageOverlay, useMapEvents } from "react-leaflet";
 import { CRS } from "leaflet";
 
 import "../style.css";
@@ -41,12 +37,19 @@ for (let i = 0; i < iconFileArray.length; i++) {
 }
 //console.log(iconFileArray);
 var iconArray = []; // icon filenames used by client
-const iconNamesOrder = {"blue" : 0, "contested" : 1, "neutral" : 2, "red" : 3}; //needed for automatic icon types fill
-const objectivesNamesOrder = {"Aerodrome" : 0, "Communication" : 4, "Bunker" : 8, "Main Targets" : 12, "FARP" : 17};
+const iconNamesOrder = { blue: 0, contested: 1, neutral: 2, red: 3 }; //needed for automatic icon types fill
+const objectivesNamesOrder = {
+  Aerodrome: 0,
+  Communication: 4,
+  Bunker: 8,
+  "Main Targets": 12,
+  FARP: 17,
+};
 // for reference, search this file for " DOC:TYPES "
 //types start: 0, 4, 8, 12, 17
 
-for (let i = 0; i < iconFileArray.length; i++) { // Automatic icon object array creation, since it's better than 22 imports.
+for (let i = 0; i < iconFileArray.length; i++) {
+  // Automatic icon object array creation, since it's better than 22 imports.
   iconArray[i] = new L.icon({
     iconUrl: iconFileArray[i],
     shadowUrl: iconShadow,
@@ -70,7 +73,7 @@ let DefaultIcon = L.icon({
  | |   | | | / __| __/ _ \| '_ ` _ \  | |/ __/ _ \| '_ \/ __|
  | |___| |_| \__ \ || (_) | | | | | | | | (_| (_) | | | \__ \
   \_____\__,_|___/\__\___/|_| |_| |_| |_|\___\___/|_| |_|___/
-*///////////////////////////////////////////////////////////////////////////////////////////
+*/ //////////////////////////////////////////////////////////////////////////////////////////
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
@@ -78,7 +81,6 @@ const bounds = new L.LatLngBounds([0, 0], [3590, 4510]); // map bounds
 const extendedBounds = new L.LatLngBounds([-400, -400], [3990, 4910]); // view bounds
 
 //var position = [1000, 1000];
-
 
 var objecitves = new Array(39).fill(0); // Initialise empty array, I have no idea why you have to do this.
 // But this is needed to later modify it with map fuction, which is not possible with empty array.
@@ -128,10 +130,9 @@ const positionMap = [
   // Finally, it took me like 2 hours to make this list. But it's perfect...
 ];
 
-
 const client = new W3CWebSocket(
   //"wss://demo.piesocket.com/v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self",
-  "ws://localhost:2137" ,
+  "ws://localhost:2137"
 );
 
 // END VARIABLES
@@ -154,37 +155,37 @@ export default class SmallMap extends Component {
   };
 
   componentDidMount() {
+    this.getMapData(); // ran only once
+
     console.log("Initialising websocket");
     client.onopen = () => {
-      console.log("WebSocket Client Connected");
-    };    
-      client.onmessage = (message) => {
-        //console.log(message);
-        var object = JSON.parse(message.data);
-
-      };
-    this.getMapData();
+      console.log("Connected to backend server");
+    };
+    client.onmessage = (message) => {
+      //console.log(message);
+      try {
+      var object = JSON.parse(message.data);
+      }
+      catch(e) {
+        // all this try catch should be removed after changing data source to valid
+      }
+    };
   }
 
-  componentWillUnmount() {
-    //clearTimeout(this.getMapIntervalID);
-  }
   getMapData = () => {
-    //console.log("Getting websocket data");
-    /*
+    // ran only once, to load the initial map state, later updated with websocket
     fetch("http://localhost:8000/api/get_map_data", {
       method: "GET",
     })
+      
       .then((response) => response.json())
       .then((data) => {
         this.setState({
           data: data,
         });
-        //this.mapArray = data;
-        this.getMapIntervalID = setTimeout(this.getMapData.bind(this), 60000);
         //console.log(data);
       });
-      */
+      
   };
 
   render() {
@@ -212,12 +213,17 @@ export default class SmallMap extends Component {
 
           {objecitves.map((object, i) => {
             if (this.state.data[i] !== undefined) {
-              var convData = `[${this.state.data[i]}]`;
+              //var convData = `[${this.state.data[i]}]`;
+              //convData = convData.substring(1, convData.length - 1); // removes front and rear bracket
+              //var convDataArr = convData.split(","); // splits values to array
               
-              convData = convData.substring(1, convData.length - 1); // removes front and rear bracket
-              
-              var convDataArr = convData.split(","); // splits values to array
-              //console.log(convDataArr); // ID, name, type, status, coallition, underAttack, numUnits
+              // above code is unused since changing backend from Python to Node.js
+              // changed a little how the data is sent, instead of only values,
+              // it also sends collumn name of every value
+              // so, instead of just using our data, we need first to get every collumn value:
+              var convDataArr = Object.values(this.state.data[i]); // now we get the values
+
+              //console.log(convDataArr); // order: ID, name, type, status, coallition, underAttack, numUnits
               var objIcon = DefaultIcon;
               // this part of code was hard for my brain to process
 
@@ -236,28 +242,29 @@ export default class SmallMap extends Component {
               //so, knowing these indexes, types start at: 0, 4, 8, 12, 17
 
               // calculatedID = objectiveNamesOrder + objectivesType, as calculated from their associative arrays.
-              var calculatedID = objectivesNamesOrder[convDataArr[2]] + iconNamesOrder[convDataArr[4]];
+              var calculatedID =
+                objectivesNamesOrder[convDataArr[2]] +
+                iconNamesOrder[convDataArr[4]];
               // this gets values from those associative arrays, and uses them to calcualte iconID,
               // skipping not used files.
               objIcon = iconArray[calculatedID];
               return (
-                <MapMarker obj={object}
-                key={i}
-                position={positionMap[i]}
-                icon={objIcon}
-                objName={convDataArr[1]}
-                objType={convDataArr[2]}
-                objStatus={convDataArr[3]}
-                objCoallition={convDataArr[4]}
-                objUnderAttack={convDataArr[5]}
-                objNumUnits={convDataArr[6]}>
-
-                </MapMarker>
+                <MapMarker
+                  obj={object}
+                  key={i}
+                  position={positionMap[i]}
+                  icon={objIcon}
+                  objName={convDataArr[1]}
+                  objType={convDataArr[2]}
+                  objStatus={convDataArr[3]}
+                  objCoallition={convDataArr[4]}
+                  objUnderAttack={convDataArr[5]}
+                  objNumUnits={convDataArr[6]}
+                ></MapMarker>
               );
             }
-            return 0; // idk why but this arrow function needs one
-          }
-          )}
+            return null; // idk why but this arrow function needs one
+          })}
         </MapContainer>
         <br></br>
         <br></br>
