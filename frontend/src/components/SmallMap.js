@@ -179,14 +179,14 @@ export default class SmallMap extends Component {
   updateMap = (json) => {
     var finalData = this.state.data; // copy current data so it will be changed bellow
     //console.log("Update map executed, parse the data. For now:");
-    console.log(finalData);
-    console.log(json);
+    //console.log(finalData);
+    //console.log(json);
     // now we need to check if the data received isn't statistics data
     if (Object.keys(json).includes("properties")) {
       // data is statistics, we pass on that one.
     } else {
       // data might me objective data then.
-      console.log(Object.keys(json));
+      //console.log(Object.keys(json));
       const possibleObjTypes = Object.keys(objectivesNamesOrder); // get only the array keys
       // Aerodrome, Communication, Bunker, "Main Targets", FARP
       // check if received objectives is in the above list
@@ -198,11 +198,11 @@ export default class SmallMap extends Component {
         // above statement is to check if we receive only one objective at a time.
         const type = Object.keys(json)[0]; // eg. Aerodrome
         const name = Object.keys(Object.values(json)[0])[0]; // eg. Sukhumi-Babushara
-        console.log(type + " " + name); // eg. Aerodrome Sukhumi-Babushara
+        //console.log(type + " " + name); // eg. Aerodrome Sukhumi-Babushara
         // list of properties that we could receive:
         // status, coa, underAttack, numUnits
         // now it's time to set only the values we received, since only they changed
-        console.log(json[type][name]); // eg. coa: red, numUnits: 3
+        //console.log(json[type][name]); // eg. coa: red, numUnits: 3
         // let's find the index in array of all objectives, by it's name.
         function findElement(element) {
           // here is the order of parameters:
@@ -214,25 +214,25 @@ export default class SmallMap extends Component {
         if (json[type][name].hasOwnProperty("status")) {
           // changing final data status.
           finalData[index].status = json[type][name].status;
-          console.log("Changed status");
+          //console.log("Changed status");
           //console.log(finalData);
         }
         if (json[type][name].hasOwnProperty("coa")) {
           // changing final data coallition.
           finalData[index].coalition = json[type][name].coa;
-          console.log("Changed coalition");
+          //console.log("Changed coalition");
           //console.log(finalData);
         }
         if (json[type][name].hasOwnProperty("underAttack")) {
           // changing final data underAttack.
           finalData[index].underAttack = json[type][name].underAttack;
-          console.log("Changed underAttack");
+          //console.log("Changed underAttack");
           //console.log(finalData);
         }
         if (json[type][name].hasOwnProperty("numUnits")) {
           // changing final data numUnits.
           finalData[index].numUnits = json[type][name].numUnits;
-          console.log("Changed numUnits");
+          //console.log("Changed numUnits");
           //console.log(finalData);
         }
         //console.log(finalData);
