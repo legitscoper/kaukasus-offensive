@@ -49,7 +49,8 @@ class MapMarker extends React.Component {
       if (props.objUnderAttack > 0) {
         return (
           <span style={popupText}>
-            <br></br><br></br>
+            <br></br>
+            <br></br>
             <span style={{ color: "red" }}>
               {" "}
               <b>Under Attack!</b>
@@ -61,7 +62,25 @@ class MapMarker extends React.Component {
     function Contested(props) {
       if (props.objCoallition === "contested") {
         return (
-          <span style={{ color: "grey", fontWeight: "bold" }}> Contested!</span>
+          <>
+            <br></br>
+            <span style={{ color: "grey", fontWeight: "bold" }}>
+              {" "}
+              Contested!
+            </span>
+          </>
+        );
+      }
+    }
+    function Status(props) {
+      if (props.objType === "FARP" || props.objType === "Aerodrome") {
+        return (
+          <>
+            <br></br>
+            <span style={popupText}>
+              Status: <b>{props.objStatus}</b>
+            </span>
+          </>
         );
       }
     }
@@ -81,14 +100,16 @@ class MapMarker extends React.Component {
             text={this.props.objName}
             coallition={this.props.objCoallition}
           />
-          <br></br>
+
           <Contested objCoallition={this.props.objCoallition} />
+          <Status
+            objStatus={this.props.objStatus}
+            objType={this.props.objType}
+          />
           <br></br>
           <span style={popupText}>
-            Status: <b>{this.props.objStatus}</b>
+            Units: <b>{this.props.objNumUnits}</b>
           </span>
-          <br></br>
-          <span style={popupText}>Units: <b>{this.props.objNumUnits}</b></span>
           <UnderAttack objUnderAttack={this.props.objUnderAttack} />
         </Popup>
       </Marker>
