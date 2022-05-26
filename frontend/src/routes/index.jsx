@@ -1,4 +1,4 @@
-// Index, page rendered on the entering. Contains short introduction, map, statistics and more.
+// Index, page rendered on the entering. Contains short introduction, map, statistics and more. Made by Jan Intelkor.
 
 import React from "react";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
@@ -71,6 +71,8 @@ const PlayerCount = () => {
   );
 };
 
+
+
 class Index extends React.Component {
   state = {
     // stores all data received from api
@@ -88,9 +90,20 @@ class Index extends React.Component {
     };
     client.onmessage = (message) => {
       //console.log(message);
+      try {
       var object = JSON.parse(message.data);
+      // now it's time to update the statistics every time we receive new data.
+      }
+      catch(e) {
+        console.log("JSON Data jest inwalidą: " + message.data); 
+        // invalid JSON received, probably executed only in test enviroment
+      }
     };
   }
+  componentWillUnmount() {
+    client.close();
+  }
+
 
   getStatistics = () => {
     fetch("http://localhost:8000/api/get_mission_statistics", {
