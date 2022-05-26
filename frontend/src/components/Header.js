@@ -47,11 +47,13 @@ class Header extends React.Component {
                   Statistics
                 </a>
               </li>
+              {/*
               <li className="nav-item">
                 <Link to="/" className="nav-link">
                   Big Game Map
                 </Link>
               </li>
+        */}
             </ul>
           </header>
         );
