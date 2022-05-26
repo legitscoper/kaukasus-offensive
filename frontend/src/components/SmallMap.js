@@ -216,17 +216,28 @@ export default class SmallMap extends Component {
           return Object.values(element)[1] === name; // is executed as much as the objective array big is.
         }
         const index = finalData.findIndex(findElement);
-
+        if (json[type][name].hasOwnProperty("status")) {
+          // changing final data status.
+          finalData[index].status = json[type][name].status;
+          console.log("Changed status");
+          //console.log(finalData);
+        }
         if (json[type][name].hasOwnProperty("coa")) {
           // changing final data coallition.
           finalData[index].coalition = json[type][name].coa;
           console.log("Changed coalition");
           //console.log(finalData);
+        } 
+        if (json[type][name].hasOwnProperty("underAttack")) {
+          // changing final data underAttack.
+          finalData[index].underAttack = json[type][name].underAttack;
+          console.log("Changed underAttack");
+          //console.log(finalData);
         }
-        if (json[type][name].hasOwnProperty("status")) {
-          // changing final data status.
-          finalData[index].status = json[type][name].status;
-          console.log("Changed status");
+        if (json[type][name].hasOwnProperty("numUnits")) {
+          // changing final data numUnits.
+          finalData[index].numUnits = json[type][name].numUnits;
+          console.log("Changed numUnits");
           //console.log(finalData);
         }
         //console.log(finalData);
