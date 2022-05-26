@@ -15,7 +15,20 @@ import AnimatedRoutes from "./components/AnimatedRoutes";
 import { BrowserRouter as Router } from "react-router-dom";
 
 /*
-TODO:
+TODO more important:
+- Statistics websocket - 0.5d
+- Currently online - 1d
+- Slots SQL - 1-2d
+- Slots websocket 1d
+- Zapytaj wołowinę czy te statystyki na dole strony z scores maja być czy nie
+- Save (update) changed data to SQL - 1-2d
+- Map legend - 1-2d
+- Coordinates of every objective + grid - 0.5d
+- Simpleradio, tacview, discord etc. links - 0.5d
+
+TODO less important:
+- Staticsics for every player (on click on him, dashboard-like)
+- Statistics since server beginning
 - Instead of using multiple websockets, make data transfer in RxJS
 - Maybe instead of making 2 websockets in backend, make a proxy?
 
