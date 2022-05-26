@@ -146,8 +146,6 @@ const LocationFinderDummy = () => {
   return null;
 };
 
-
-
 export default class SmallMap extends Component {
   //getMapIntervalID;
 
@@ -166,12 +164,11 @@ export default class SmallMap extends Component {
     client.onmessage = (message) => {
       //console.log(message);
       try {
-      var object = JSON.parse(message.data);
-      // now it's time to update the map every time we receive new data.
-      this.updateMap(object);
-      }
-      catch(e) {
-        console.log("JSON Data jest inwalidą: " + message.data + "ERROR: " + e); 
+        var object = JSON.parse(message.data);
+        // now it's time to update the map every time we receive new data.
+        this.updateMap(object);
+      } catch (e) {
+        console.log("JSON Data jest inwalidą: " + message.data + "ERROR: " + e);
         // invalid JSON received, probably executed only in test enviroment
       }
     };
@@ -179,7 +176,6 @@ export default class SmallMap extends Component {
   componentWillUnmount() {
     client.close();
   }
-
   updateMap = (json) => {
     var finalData = this.state.data; // copy current data so it will be changed bellow
     //console.log("Update map executed, parse the data. For now:");
@@ -188,15 +184,14 @@ export default class SmallMap extends Component {
     // now we need to check if the data received isn't statistics data
     if (Object.keys(json).includes("properties")) {
       // data is statistics, we pass on that one.
-    }
-    else { // data might me objective data then.
+    } else {
+      // data might me objective data then.
       console.log(Object.keys(json));
       const possibleObjTypes = Object.keys(objectivesNamesOrder); // get only the array keys
       // Aerodrome, Communication, Bunker, "Main Targets", FARP
       // check if received objectives is in the above list
-      if (Object.keys(json).some(r => possibleObjTypes.includes(r))) {
-        if(Object.keys(json).length > 1)
-        {
+      if (Object.keys(json).some((r) => possibleObjTypes.includes(r))) {
+        if (Object.keys(json).length > 1) {
           console.log("ERR: More than one object type received");
           return "ERROR: More than one object type received";
         }
@@ -227,7 +222,7 @@ export default class SmallMap extends Component {
           finalData[index].coalition = json[type][name].coa;
           console.log("Changed coalition");
           //console.log(finalData);
-        } 
+        }
         if (json[type][name].hasOwnProperty("underAttack")) {
           // changing final data underAttack.
           finalData[index].underAttack = json[type][name].underAttack;
@@ -243,19 +238,18 @@ export default class SmallMap extends Component {
         //console.log(finalData);
       }
     }
-    
+
     this.setState({
       data: finalData,
     });
     console.log("Finished updating (or not) data on map");
-  }
+  };
 
   getMapData = () => {
     // ran only once, to load the initial map state, later updated with websocket
     fetch("http://localhost:8000/api/get_map_data", {
       method: "GET",
     })
-      
       .then((response) => response.json())
       .then((data) => {
         this.setState({
@@ -263,7 +257,6 @@ export default class SmallMap extends Component {
         });
         //console.log(data);
       });
-      
   };
 
   render() {
@@ -294,7 +287,7 @@ export default class SmallMap extends Component {
               //var convData = `[${this.state.data[i]}]`;
               //convData = convData.substring(1, convData.length - 1); // removes front and rear bracket
               //var convDataArr = convData.split(","); // splits values to array
-              
+
               // above code is unused since changing backend from Python to Node.js
               // changed a little how the data is sent, instead of only values,
               // it also sends collumn name of every value
