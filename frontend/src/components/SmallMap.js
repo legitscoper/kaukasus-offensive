@@ -1,4 +1,4 @@
-// Map coponent file. Those imports are a mess
+// Map coponent file. Made by Jan Intelkor.
 
 import React, { Component } from "react";
 
@@ -146,6 +146,8 @@ const LocationFinderDummy = () => {
   return null;
 };
 
+
+
 export default class SmallMap extends Component {
   //getMapIntervalID;
 
@@ -165,11 +167,76 @@ export default class SmallMap extends Component {
       //console.log(message);
       try {
       var object = JSON.parse(message.data);
+      // now it's time to update the map every time we receive new data.
+      this.updateMap(object);
       }
       catch(e) {
-        // all this try catch should be removed after changing data source to valid
+        console.log("JSON Data jest inwalidą: " + message.data + "ERROR: " + e); 
+        // invalid JSON received, probably executed only in test enviroment
       }
     };
+  }
+  componentWillUnmount() {
+    client.close();
+  }
+
+  updateMap = (json) => {
+    var finalData = this.state.data; // copy current data so it will be changed bellow
+    //console.log("Update map executed, parse the data. For now:");
+    console.log(finalData);
+    console.log(json);
+    // now we need to check if the data received isn't statistics data
+    if (Object.keys(json).includes("properties")) {
+      // data is statistics, we pass on that one.
+    }
+    else { // data might me objective data then.
+      console.log(Object.keys(json));
+      const possibleObjTypes = Object.keys(objectivesNamesOrder); // get only the array keys
+      // Aerodrome, Communication, Bunker, "Main Targets", FARP
+      // check if received objectives is in the above list
+      if (Object.keys(json).some(r => possibleObjTypes.includes(r))) {
+        if(Object.keys(json).length > 1)
+        {
+          console.log("ERR: More than one object type received");
+          return "ERROR: More than one object type received";
+        }
+        // above statement is to check if we receive only one objective at a time.
+        const type = Object.keys(json)[0]; // eg. Aerodrome
+        const name = Object.keys(Object.values(json)[0])[0]; // eg. Sukhumi-Babushara
+        console.log(type + " " + name); // eg. Aerodrome Sukhumi-Babushara
+        // list of properties that we could receive:
+        // status, coa, underAttack, numUnits
+        // now it's time to set only the values we received, since only they changed
+        console.log(json[type][name]); // eg. coa: red, numUnits: 3
+        // let's find the index in array of all objectives, by it's name.
+        function findElement(element) {
+          // here is the order of parameters:
+          // so, name is on index[1] of an array element. index[0] is ID.
+          // ID is not used since it does not come in Savegame data.
+          return Object.values(element)[1] === name; // is executed as much as the objective array big is.
+        }
+        const index = finalData.findIndex(findElement);
+
+        if (json[type][name].hasOwnProperty("coa")) {
+          // changing final data coallition.
+          finalData[index].coalition = json[type][name].coa;
+          console.log("Changed coalition");
+          //console.log(finalData);
+        }
+        if (json[type][name].hasOwnProperty("status")) {
+          // changing final data status.
+          finalData[index].status = json[type][name].status;
+          console.log("Changed status");
+          //console.log(finalData);
+        }
+        //console.log(finalData);
+      }
+    }
+    
+    this.setState({
+      data: finalData,
+    });
+    console.log("Finished updating (or not) data on map");
   }
 
   getMapData = () => {
