@@ -218,7 +218,7 @@ export default class SmallMap extends Component {
           //console.log(finalData);
         }
         if (json[type][name].hasOwnProperty("coa")) {
-          // changing final data coallition.
+          // changing final data coalition.
           finalData[index].coalition = json[type][name].coa;
           //console.log("Changed coalition");
           //console.log(finalData);
@@ -296,12 +296,12 @@ export default class SmallMap extends Component {
                 // so, instead of just using our data, we need first to get every collumn value:
                 var convDataArr = Object.values(this.state.data[i]); // now we get the values
 
-                //console.log(convDataArr); // order: ID, name, type, status, coallition, underAttack, numUnits
+                //console.log(convDataArr); // order: ID, name, type, status, coalition, underAttack, numUnits
                 var objIcon = DefaultIcon;
                 // this part of code was hard for my brain to process
 
                 //convDataArr[2] ---- type
-                //convDataArr[4] ---- coallition
+                //convDataArr[4] ---- coalition
 
                 // icon order --- blue, contested, neutral, red
                 //iconArray[0] - [3] - airports
@@ -330,7 +330,7 @@ export default class SmallMap extends Component {
                     objName={convDataArr[1]}
                     objType={convDataArr[2]}
                     objStatus={convDataArr[3]}
-                    objCoallition={convDataArr[4]}
+                    objcoalition={convDataArr[4]}
                     objUnderAttack={convDataArr[5]}
                     objNumUnits={convDataArr[6]}
                   ></MapMarker>
