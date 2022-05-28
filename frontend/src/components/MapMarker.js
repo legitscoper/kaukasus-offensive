@@ -33,7 +33,7 @@ const popupText = {
 class MapMarker extends React.Component {
   render() {
     function PopupHeader(props) {
-      const headerColor = props.coallition;
+      const headerColor = props.coalition;
       if (headerColor === "red") {
         return <span style={popupHeadRed}>{props.text}</span>;
       } else if (headerColor === "blue") {
@@ -60,7 +60,7 @@ class MapMarker extends React.Component {
       }
     }
     function Contested(props) {
-      if (props.objCoallition === "contested") {
+      if (props.objcoalition === "contested") {
         return (
           <>
             <br></br>
@@ -91,17 +91,17 @@ class MapMarker extends React.Component {
         objName={this.props.objName}
         objType={this.props.objType}
         objStatus={this.props.objStatus}
-        objCoallition={this.props.objCoallition}
+        objcoalition={this.props.objcoalition}
         objUnderAttack={this.props.objUnderAttack}
         objNumUnits={this.props.objNumUnits}
       >
         <Popup className="objectivePopup" text={this.props.objName}>
           <PopupHeader
             text={this.props.objName}
-            coallition={this.props.objCoallition}
+            coalition={this.props.objcoalition}
           />
 
-          <Contested objCoallition={this.props.objCoallition} />
+          <Contested objcoalition={this.props.objcoalition} />
           <Status
             objStatus={this.props.objStatus}
             objType={this.props.objType}
