@@ -16,7 +16,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 /*
 TODO more important:
-- Currently online - 1d
+- Currently online - 1d POSTONED
+
 - Slots SQL - 1-2d
 - Slots websocket 1d
 - Zapytaj wołowinę czy te statystyki na dole strony z scores maja być czy nie
