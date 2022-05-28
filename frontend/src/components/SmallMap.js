@@ -235,14 +235,15 @@ export default class SmallMap extends Component {
           //console.log("Changed numUnits");
           //console.log(finalData);
         }
+        this.setState({
+          data: finalData,
+        });
+        console.log("Finished updating (or not) data on map");
         //console.log(finalData);
       }
     }
 
-    this.setState({
-      data: finalData,
-    });
-    console.log("Finished updating (or not) data on map");
+    
   };
 
   getMapData = () => {
