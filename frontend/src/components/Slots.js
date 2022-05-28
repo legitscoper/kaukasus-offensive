@@ -3,6 +3,25 @@ import React from "react";
 import Slot from "./Slot";
 
 class Slots extends React.Component {
+    state = {
+        // stores all data received from websocket
+        slots: [],
+      };
+
+    componentDidMount() {
+        this.getSlots();
+    }
+    getSlots = () => {
+        fetch("http://localhost:8000/api/get_slots", {
+          method: "GET",
+        })
+          .then((response) => response.json())
+          .then((slots) => {
+            this.setState({
+              slots: slots,
+            });
+          });
+      };
   render()
   {
       return (
