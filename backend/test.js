@@ -46,14 +46,23 @@ app.get("/api/get_mission_statistics", (req, res) => {
     );
   });
 
-app.get("/api/get_slots", (req, res) => {
-    console.log("GET /api/get_slots");
+app.get("/api/get_slots_red", (req, res) => {
+    console.log("GET /api/get_slots_red");
     conn.query(
-      "SELECT * FROM `ko_slotlist` WHERE `serverID` = 5",
+      "SELECT * FROM `ko_slotlist` WHERE `serverID` = 5 AND  `coalition` = 'red'",
       (err, rows, fields) => {
         if (err) throw err;
         res.json(rows);
-        
+      }
+    );
+  });
+  app.get("/api/get_slots_blue", (req, res) => {
+    console.log("GET /api/get_slots_blue");
+    conn.query(
+      "SELECT * FROM `ko_slotlist` WHERE `serverID` = 5 AND  `coalition` = 'blue'",
+      (err, rows, fields) => {
+        if (err) throw err;
+        res.json(rows);
       }
     );
   });
