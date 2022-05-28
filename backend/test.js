@@ -58,8 +58,6 @@ app.get("/api/get_slots", (req, res) => {
     );
   });
 
-
-
   app.get("/api/count_players", (req, res) => {
     console.log("GET /api/count_players");
     conn.query(
