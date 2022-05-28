@@ -261,84 +261,86 @@ export default class SmallMap extends Component {
 
   render() {
     return (
-      <div style={{ width: "100%", height: "90vh", background: "black" }}>
-        {/*<p style={{ color: "white" }}>Test data: {this.state.data} </p>*/}
-        <MapContainer
-          className="map"
-          style={{ width: "100%", height: "90vh" }}
-          crs={CRS.Simple}
-          center={[1500, 2300]}
-          zoom={-2}
-          scrollWheelZoom={false}
-          minZoom={-2}
-          maxZoom={3}
-          maxBoundsViscosity={1}
-          maxBounds={extendedBounds}
-        >
-          <ImageOverlay
-            url={GameMap}
-            bounds={bounds}
-            zIndex={10}
-          ></ImageOverlay>
-          <LocationFinderDummy />
+      <div className="row bg-light rounded-3 mb-4" id="small_map">
+        <div style={{ width: "100%", height: "90vh", background: "black" }}>
+          {/*<p style={{ color: "white" }}>Test data: {this.state.data} </p>*/}
+          <MapContainer
+            className="map"
+            style={{ width: "100%", height: "90vh" }}
+            crs={CRS.Simple}
+            center={[1500, 2300]}
+            zoom={-2}
+            scrollWheelZoom={false}
+            minZoom={-2}
+            maxZoom={3}
+            maxBoundsViscosity={1}
+            maxBounds={extendedBounds}
+          >
+            <ImageOverlay
+              url={GameMap}
+              bounds={bounds}
+              zIndex={10}
+            ></ImageOverlay>
+            <LocationFinderDummy />
 
-          {objecitves.map((object, i) => {
-            if (this.state.data[i] !== undefined) {
-              //var convData = `[${this.state.data[i]}]`;
-              //convData = convData.substring(1, convData.length - 1); // removes front and rear bracket
-              //var convDataArr = convData.split(","); // splits values to array
+            {objecitves.map((object, i) => {
+              if (this.state.data[i] !== undefined) {
+                //var convData = `[${this.state.data[i]}]`;
+                //convData = convData.substring(1, convData.length - 1); // removes front and rear bracket
+                //var convDataArr = convData.split(","); // splits values to array
 
-              // above code is unused since changing backend from Python to Node.js
-              // changed a little how the data is sent, instead of only values,
-              // it also sends collumn name of every value
-              // so, instead of just using our data, we need first to get every collumn value:
-              var convDataArr = Object.values(this.state.data[i]); // now we get the values
+                // above code is unused since changing backend from Python to Node.js
+                // changed a little how the data is sent, instead of only values,
+                // it also sends collumn name of every value
+                // so, instead of just using our data, we need first to get every collumn value:
+                var convDataArr = Object.values(this.state.data[i]); // now we get the values
 
-              //console.log(convDataArr); // order: ID, name, type, status, coallition, underAttack, numUnits
-              var objIcon = DefaultIcon;
-              // this part of code was hard for my brain to process
+                //console.log(convDataArr); // order: ID, name, type, status, coallition, underAttack, numUnits
+                var objIcon = DefaultIcon;
+                // this part of code was hard for my brain to process
 
-              //convDataArr[2] ---- type
-              //convDataArr[4] ---- coallition
+                //convDataArr[2] ---- type
+                //convDataArr[4] ---- coallition
 
-              // icon order --- blue, contested, neutral, red
-              //iconArray[0] - [3] - airports
-              //iconArray[4] - [7] - antennas
-              //iconArray[8] - [11] - bunkers
-              //iconArray[12] - [15] - dam
-              //iconArray[16] - explosion
-              //iconArray[17] - [20] - FARP
-              //iconArray[21] - flame.gif
-              // DOC:TYPES
-              //so, knowing these indexes, types start at: 0, 4, 8, 12, 17
+                // icon order --- blue, contested, neutral, red
+                //iconArray[0] - [3] - airports
+                //iconArray[4] - [7] - antennas
+                //iconArray[8] - [11] - bunkers
+                //iconArray[12] - [15] - dam
+                //iconArray[16] - explosion
+                //iconArray[17] - [20] - FARP
+                //iconArray[21] - flame.gif
+                // DOC:TYPES
+                //so, knowing these indexes, types start at: 0, 4, 8, 12, 17
 
-              // calculatedID = objectiveNamesOrder + objectivesType, as calculated from their associative arrays.
-              var calculatedID =
-                objectivesNamesOrder[convDataArr[2]] +
-                iconNamesOrder[convDataArr[4]];
-              // this gets values from those associative arrays, and uses them to calcualte iconID,
-              // skipping not used files.
-              objIcon = iconArray[calculatedID];
-              return (
-                <MapMarker
-                  obj={object}
-                  key={i}
-                  position={positionMap[i]}
-                  icon={objIcon}
-                  objName={convDataArr[1]}
-                  objType={convDataArr[2]}
-                  objStatus={convDataArr[3]}
-                  objCoallition={convDataArr[4]}
-                  objUnderAttack={convDataArr[5]}
-                  objNumUnits={convDataArr[6]}
-                ></MapMarker>
-              );
-            }
-            return null; // idk why but this arrow function needs one
-          })}
-        </MapContainer>
-        <br></br>
-        <br></br>
+                // calculatedID = objectiveNamesOrder + objectivesType, as calculated from their associative arrays.
+                var calculatedID =
+                  objectivesNamesOrder[convDataArr[2]] +
+                  iconNamesOrder[convDataArr[4]];
+                // this gets values from those associative arrays, and uses them to calcualte iconID,
+                // skipping not used files.
+                objIcon = iconArray[calculatedID];
+                return (
+                  <MapMarker
+                    obj={object}
+                    key={i}
+                    position={positionMap[i]}
+                    icon={objIcon}
+                    objName={convDataArr[1]}
+                    objType={convDataArr[2]}
+                    objStatus={convDataArr[3]}
+                    objCoallition={convDataArr[4]}
+                    objUnderAttack={convDataArr[5]}
+                    objNumUnits={convDataArr[6]}
+                  ></MapMarker>
+                );
+              }
+              return null; // idk why but this arrow function needs one
+            })}
+          </MapContainer>
+          <br></br>
+          <br></br>
+        </div>
       </div>
     );
   }
