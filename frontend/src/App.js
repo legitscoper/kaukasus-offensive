@@ -16,7 +16,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 /*
 TODO more important:
-- Statistics websocket - 0.5d
 - Currently online - 1d
 - Slots SQL - 1-2d
 - Slots websocket 1d
